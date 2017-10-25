@@ -22,33 +22,36 @@ Create two lists in your Office 365 developer tenant's developer site.
    2. Choose **Tasks**.
 
    3. In the popup window, enter **Tasks** in the name textbox and click **Create** button to create the list.
+   
 	![](Images/create_list_Tasks.png)
 	 
 3. Create list **Items**.
    1. Choose **Custom List**.
 
    2. In the popup window, enter **Items** in the name textbox and click **Create** button to create the list.
+
 	![](Images/create_list_Items.png)
 
    3. Click the gear icon on the top nav bar on the right, then choose **Site contents** to go to your Apps page, find the list **Items** in the library, right click on it and choose **Settings**.
 
    4. Move down to **Columns** section, choose **Create Column**.
 
-   5. Enter 'ItemData1' as the **Column name**, choose type **Number (1, 1.0, 100)**, and choose **Yes** for **Require that this column contains information:**.
+   5. Enter **ItemData1** as the **Column name**, choose type **Number (1, 1.0, 100)**, and choose **Yes** for **Require that this column contains information:**.
 
    6. Click **OK** button at the bottom right corner to add this column to the list.
 
    7. Repeat step #8.
 
-   8. Enter 'ItemData2' as the **Column name**, choose type **Choice (menu to choose from)**, and choose **Yes** for **Require that this column contains information:**.
+   8. Enter **ItemData2** as the **Column name**, choose type **Choice (menu to choose from)**, and choose **Yes** for **Require that this column contains information:**, type some choices separated by line you preferred.
 
    9. Click **OK**.
 
    10. Repeat step #8.
 
-   11. Enter 'ItemData3' as the **Column name**, choose type **Choice (menu to choose from)**, and choose **Yes** for **Require that this column contains information:**, type 'Q1','Q2', 'Q3', 'Q4', separated by line for choices.
+   11. Enter **ItemData3** as the **Column name**, choose type **Choice (menu to choose from)**, and choose **Yes** for **Require that this column contains information:**, type 'Q1','Q2', 'Q3', 'Q4', separated by line for choices.
 
    12. Click **OK**.
+
 	![](Images/list_items_columns.png)
 
 4. Add some items to **Tasks**.
@@ -110,12 +113,11 @@ Create two lists in your Office 365 developer tenant's developer site.
    - Select **Use the current folder** for where to place the files.
    - Choose **N** to require the extension to be installed on each site explicitly when it's being used. 
    - Choose **WebPart** as the client-side component type to be created.  
-   - 
-   - Accept the default **HelloWorld** as your web part name and        choose **Enter**.
+   - Accept the default **HelloWorld** as your web part name and choose **Enter**.
    - Accept the default **HelloWorld description** as your web part description and choose **Enter**.
    - Accept the default **React** as the framework you would like to use and choose **Enter**.
 
-    	![](Images/init_webpart_project.png)
+	![](Images/init_webpart_project.png)
 
 5. When the scaffold is complete, you should see the following message indicating a successful scaffold:
 
@@ -183,11 +185,11 @@ Full content of the config.json file as currently as follows:
 	import * as Chartist from 'chartist';
 
 	export interface IChartistGraphProps {
-			type: 'Bar' | 'Line' | 'Pie';
-			data?: Chartist.IChartistData;
-			chartHeader?: string;
-			className?: string;
-			option?: Chartist.IPieChartOptions | Chartist.IBarChartOptions | Chartist.ILineChartOptions;
+		type: 'Bar' | 'Line' | 'Pie';
+		data?: Chartist.IChartistData;
+		chartHeader?: string;
+		className?: string;
+		option?: Chartist.IPieChartOptions | Chartist.IBarChartOptions | Chartist.ILineChartOptions;
 	}
 	```
 	>**Note:** the **IChartistGraphProps** interface defines properties for the chartist component **ChartistGraph** below.
@@ -199,34 +201,34 @@ Full content of the config.json file as currently as follows:
 	import { IChartistGraphProps } from './IChartistGraphProps';
 
 	export default class ChartistGraph extends React.Component<IChartistGraphProps, {}> {
-			private _container: HTMLDivElement;
-			private _chartist;
-			public render() {
-					return (
-							<div className={this.props.className || ''}>
-									<header>
-											<h4>{this.props.chartHeader}</h4>
-									</header>
-									<div
-											className='ct-chart'
-											ref={el => this._container = el} />
-							</div>);
+		private _container: HTMLDivElement;
+		private _chartist;
+		public render() {
+			return (
+				<div className={this.props.className || ''}>
+					<header>
+						<h4>{this.props.chartHeader}</h4>
+					</header>
+					<div
+						className='ct-chart'
+						ref={el => this._container = el} />
+				</div>);
+		}
+		public componentDidMount() {
+			this.drawChart(this.props);
+		}
+		public componentDidUpdate() {
+			this.drawChart(this.props);
+		}
+		private drawChart(config) {
+			const { data, type, option, responsiveOptions } = config;
+			if (this._chartist) {
+					this._chartist.update(data, option, responsiveOptions);
 			}
-			public componentDidMount() {
-					this.drawChart(this.props);
+			else {
+					this._chartist = new Chartist[type](this._container, data, option, responsiveOptions);
 			}
-			public componentDidUpdate() {
-					this.drawChart(this.props);
-			}
-			private drawChart(config) {
-					const { data, type, option, responsiveOptions } = config;
-					if (this._chartist) {
-							this._chartist.update(data, option, responsiveOptions);
-					}
-					else {
-							this._chartist = new Chartist[type](this._container, data, option, responsiveOptions);
-					}
-			}
+		}
 	}
 	```
 	>**Note:** the function **drawChart** takes data and options from component's props, then initialize or update when props changed.
