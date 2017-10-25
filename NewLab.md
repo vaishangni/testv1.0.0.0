@@ -72,6 +72,7 @@ Create two lists in your Office 365 developer tenant's developer site.
    8. Click **Save** to create the task.
 
    9. Add more items by repeating step #3 - step #8. 
+
 	>**IMPORTANT Note:** Make sure you create tasks with at least 2 different statuses. 
 
 5. Add some items to **Items**..
@@ -96,17 +97,23 @@ Create two lists in your Office 365 developer tenant's developer site.
 ### Create web part project ###
 
 1. Create a new project directory in your favorite location.
+
     `````shell
     md helloworld-webpart
     `````
+
 2. Go to the project directory.
+
     ```shell
     cd helloworld-webpart
     ```
+
 3. Create a new HelloWorld web part by running the Yeoman SharePoint Generator.
+
     ```shell
     yo @microsoft/sharepoint
     ```
+
 4. When prompted
    - Accept the default **helloworld-webpart** as your solution name and choose **Enter**.
    - Choose **SharePoint Online only (latest)**, and press Enter.
@@ -124,6 +131,7 @@ Create two lists in your Office 365 developer tenant's developer site.
     ![](Images/scaffold_completed.png)
 
 6. Type below script to open the project in **Visual Studio Code**
+
     ```Shell
     code .
     ```
@@ -133,14 +141,19 @@ Create two lists in your Office 365 developer tenant's developer site.
 1. Press **Cmd/Ctl+`** to open **Integrated Terminal**.
 
 2. Run the following to install **Chartist** npm package:
+
    ```shell
    npm install --save chartist
    ```
+
 3. Run the following to install **Moment** npm package:
+
    ```shell
    npm install --save moment
    ```
+
 4. Run the following to install **PnP** npm package:
+
    ```shell
    npm install --save sp-pnp-js
    ```
@@ -174,7 +187,7 @@ Full content of the config.json file as currently as follows:
   },
   "externals": {
     "chartist": "https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js",
-    "moment": "https://cdnjs.com/libraries/moment.js"
+    "moment": "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
   },
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js"
@@ -184,6 +197,7 @@ Full content of the config.json file as currently as follows:
 
 ### Create ChartistGraph component
 1. Add a new file to the *__src/webparts/helloworld/components__* folder named **IChartistGraphProps.ts**, then add following code to it.
+
 	```TypeScript
 	import * as Chartist from 'chartist';
 
@@ -195,171 +209,181 @@ Full content of the config.json file as currently as follows:
 		option?: Chartist.IPieChartOptions | Chartist.IBarChartOptions | Chartist.ILineChartOptions;
 	}
 	```
+
 	>**Note:** the **IChartistGraphProps** interface defines properties for the chartist component **ChartistGraph** below.
 	
-2. Add a new file to the *__src/webparts/helloworld/components__* folder named **IChartistGraphProps.ts**, then add following code to it.
+2. Add a new file to the *__src/webparts/helloworld/components__* folder named **ChartistGraph.tsx**, then add following code to it.
+
 	```TypeScript
 	import * as React from 'react';
 	import * as Chartist from 'chartist';
 	import { IChartistGraphProps } from './IChartistGraphProps';
 
 	export default class ChartistGraph extends React.Component<IChartistGraphProps, {}> {
-      private _container: HTMLDivElement;
-      private _chartist;
-      public render() {
-      	return (
-          <div className={this.props.className || ''}>
-            <header>
-              <h4>{this.props.chartHeader}</h4>
-            </header>
-            <div
-              className='ct-chart'
-            	ref={el => this._container = el} />
-          </div>);
-      }
-      public componentDidMount() {
-      	this.drawChart(this.props);
-      }
-      public componentDidUpdate() {
-      	this.drawChart(this.props);
-      }
-      private drawChart(config) {
-      	const { data, type, option, responsiveOptions } = config;
-      	if (this._chartist) {
-          this._chartist.update(data, option, responsiveOptions);
-      	}
-      	else {
-          this._chartist = new Chartist[type](this._container, data, option, responsiveOptions);
-      	}
-      }
+		private _container: HTMLDivElement;
+		private _chartist;
+		public render() {
+			return (
+				<div className={this.props.className || ''}>
+					<header>
+						<h4>{this.props.chartHeader}</h4>
+					</header>
+					<div
+						className='ct-chart'
+						ref={el => this._container = el} />
+				</div>);
+		}
+		public componentDidMount() {
+			this.drawChart(this.props);
+		}
+		public componentDidUpdate() {
+			this.drawChart(this.props);
+		}
+		private drawChart(config) {
+			const { data, type, option, responsiveOptions } = config;
+			if (this._chartist) {
+				this._chartist.update(data, option, responsiveOptions);
+			}
+			else {
+				this._chartist = new Chartist[type](this._container, data, option, responsiveOptions);
+			}
+		}
 	}
 	```
+
 	>**Note:** the function **drawChart** takes data and options from component's props, then initialize or update when props changed.
 
 ### Create GroupedListExample component
 
-3. Add a new file to the *__src/webparts/helloworld/components__* folder named **IGroupedListExampleProps.ts**, then add following code to it.
+1. Add a new file to the *__src/webparts/helloworld/components__* folder named **IGroupedListExampleProps.ts**, then add following code to it.
+
 	```TypeScript
 	import { IGroup } from 'office-ui-fabric-react/lib/components/GroupedList/index';
 	export interface IGroupedListExampleProps {
-			items: any[];
-			groups: IGroup[];
+		items: any[];
+		groups: IGroup[];
 	}
 	```
+
 	>**Note:** the interface **IGroupedListExampleProps** defines properties used in component **GroupedListExample** below.
 	
-4. Add a new file to the *__src/webparts/helloworld/components__* folder named **GroupedListExample.tsx**, then add following *import* statements to the top of the file .
+2. Add a new file to the *__src/webparts/helloworld/components__* folder named **GroupedListExample.tsx**, then add following *import* statements to the top of the file .
+
 	```TypeScript
 	import * as React from 'react';
 	import {
-			GroupedList,
-			IGroup
+		GroupedList,
+		IGroup
 	} from 'office-ui-fabric-react/lib/components/GroupedList/index';
 	import { IColumn } from 'office-ui-fabric-react/lib/DetailsList';
 	import { DetailsRow } from 'office-ui-fabric-react/lib/components/DetailsList/DetailsRow';
 	import {
-			FocusZone
+		FocusZone
 	} from 'office-ui-fabric-react/lib/FocusZone';
 	import {
-			Selection,
-			SelectionMode,
-			SelectionZone
+		Selection,
+		SelectionMode,
+		SelectionZone
 	} from 'office-ui-fabric-react/lib/utilities/selection/index';
 	import { IGroupedListExampleProps } from './IGroupedListExampleProps';
 
 	export default class GroupedListExample extends React.Component<IGroupedListExampleProps, any> {
-			private _selection: Selection;
+		private _selection: Selection;
 
-			constructor(props) {
-					super(props);
+		constructor(props) {
+			super(props);
 
-					this._onRenderCell = this._onRenderCell.bind(this);
-					this._selection = new Selection;
-					this._selection.setItems(props.items || []);
+			this._onRenderCell = this._onRenderCell.bind(this);
+			this._selection = new Selection;
+			this._selection.setItems(props.items || []);
+		}
+
+		public render() {
+			if (this.props.items && this.props.groups) {
+				return (
+					<FocusZone>
+						<SelectionZone
+							selection={this._selection}
+							selectionMode={SelectionMode.multiple}>
+							<GroupedList
+								items={this.props.items}
+								onRenderCell={this._onRenderCell}
+								selection={this._selection}
+								selectionMode={SelectionMode.multiple}
+								groups={this.props.groups}/>
+						</SelectionZone>
+					</FocusZone>
+				);
 			}
+			return null;
+		}
 
-			public render() {
-					if (this.props.items && this.props.groups) {
-							return (
-									<FocusZone>
-											<SelectionZone
-													selection={this._selection}
-													selectionMode={SelectionMode.multiple}>
-													<GroupedList
-															items={this.props.items}
-															onRenderCell={this._onRenderCell}
-															selection={this._selection}
-															selectionMode={SelectionMode.multiple}
-															groups={this.props.groups}/>
-											</SelectionZone>
-									</FocusZone>
-							);
+		private _onRenderCell(nestingDepth: number, item: any, itemIndex: number) {
+			let { _selection: selection } = this;
+			return (
+				<DetailsRow
+					columns={
+						Object.keys(item).slice(0, 3).map((value): IColumn => {
+							return {
+								key: value,
+								name: value,
+								fieldName: value,
+								minWidth: 300
+							};
+						})
 					}
-					return null;
-			}
-
-			private _onRenderCell(nestingDepth: number, item: any, itemIndex: number) {
-					let { _selection: selection } = this;
-					return (
-							<DetailsRow
-									columns={
-											Object.keys(item).slice(0, 3).map((value): IColumn => {
-													return {
-															key: value,
-															name: value,
-															fieldName: value,
-															minWidth: 300
-													};
-											})
-									}
-									groupNestingDepth={nestingDepth}
-									item={item}
-									itemIndex={itemIndex}
-									selection={selection}
-									selectionMode={SelectionMode.multiple} />
-					);
-			}
+					groupNestingDepth={nestingDepth}
+					item={item}
+					itemIndex={itemIndex}
+					selection={selection}
+					selectionMode={SelectionMode.multiple} />
+			);
+		}
 	}
 	```
+
 	>**Note:** the component **GroupedListExample** combines some office ui fabric react components, in the **render** function, wrap **GroupedList** with **FocusZone** and **SelectionZone** to make it focusable and selectable. **onRenderCell** returns a **DetailsRow** for each item passing into the component **GroupedListExample**.
 	
 ### Add ChartistGraph and GroupedListExample component to web part.
 
-1. Replace conents of *__src/webparts/helloworld/components/IHelloWorldProps.ts__* folder named **IChartistGraphProps.ts** with following code:
+1. Replace conents of *__src/webparts/helloworld/components/IHelloWorldProps.ts__* with following code:
+
 	```TypeScript
+	import * as Chartist from 'chartist';
 	import { IGroup } from 'office-ui-fabric-react/lib/components/GroupedList/index';
 
 	export interface IParamConfiguration {
-		CHART_WEB_PART_LOGO: string;
-		CHART_WEB_PART_HEADER_TEXT: string;
-		ACCORDION_TASK_HEADER_NAME?: string;
-		ACCORDION_TASK_HEADER_STARTDATE?: string;
-		ACCORDION_TASK_HEADER_DUEDATE?: string;
-		ACCORDION_CHART_TITLE: string;
-		ACCORDION_PIE_CHART_TITLE: string;
-		LINE_CHART_TITLE: string;
-		STACKED_BAR_CHART_TITLE: string;
+	  CHART_WEB_PART_LOGO: string;
+	  CHART_WEB_PART_HEADER_TEXT: string;
+	  ACCORDION_TASK_HEADER_NAME?: string;
+	  ACCORDION_TASK_HEADER_STARTDATE?: string;
+	  ACCORDION_TASK_HEADER_DUEDATE?: string;
+	  ACCORDION_CHART_TITLE: string;
+	  ACCORDION_PIE_CHART_TITLE: string;
+	  LINE_CHART_TITLE: string;
+	  STACKED_BAR_CHART_TITLE: string;
 	}
 
 	export interface IHelloWorldProps {
-		pieData?: Chartist.IChartistData;
-		pieOption?: Chartist.IPieChartOptions;
+	  pieData?: Chartist.IChartistData;
+	  pieOption?: Chartist.IPieChartOptions;
 
-		lineChartVisible?: boolean;
-		lineData?: Chartist.IChartistData;
-		lineOption?: Chartist.ILineChartOptions;
+	  lineChartVisible?: boolean;
+	  lineData?: Chartist.IChartistData;
+	  lineOption?: Chartist.ILineChartOptions;
 
-		stackedBarChartVisible?: boolean;
-		barData?: Chartist.IChartistData;
-		barOption?: Chartist.IBarChartOptions;
+	  stackedBarChartVisible?: boolean;
+	  barData?: Chartist.IChartistData;
+	  barOption?: Chartist.IBarChartOptions;
 
-		groupItems?: any[];
-		groupGroups?: IGroup[];
+	  groupItems?: any[];
+	  groupGroups?: IGroup[];
 
-		paramConfiguration: IParamConfiguration;
-		error: string[];
+	  paramConfiguration: IParamConfiguration;
+	  error: string[];
 	}
 	```
+
 	>**Note:** The interface **IParamConfiguration** defines properties what values are configurable in an external JSON file. While **IHelloWorldProps** defines properties used for component **HelloWorld** below.
 	
 2. Edit file *__src/webparts/helloworld/components/HelloWorld.module.scss__* to add below sections underneath **.button** class:
@@ -412,6 +436,7 @@ Full content of the config.json file as currently as follows:
 	```
 
 3. Replace the content of *__src/webparts/helloworld/components/HelloWorld.tsx__* with following code
+
 	```TypeScript
 	import * as React from 'react';
 	import styles from './HelloWorld.module.scss';
@@ -457,43 +482,46 @@ Full content of the config.json file as currently as follows:
 		}
 	}
 	```
+
 	>**Note:** The render function takes charge of rendering a list of errors if any, and render a pie chart, a grouped list, a line chart and a stacked bar chart. Method **componentDidMount** uses **SPComponentLoader.loadCss** to load chartis styles from **jsdelivr** cdn.
 
 ### Configure Property Pane
 
 1. Edit the file *__src/webparts/helloworld/loc/mystrings.d.ts__* to change interface **IHelloWorldWebPartStrings** as following:
 
-```TypeScript
-declare interface IHelloWorldWebPartStrings {
-  PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
+	```TypeScript
+	declare interface IHelloWorldWebPartStrings {
+	  PropertyPaneDescription: string;
+	  BasicGroupName: string;
+	  DescriptionFieldLabel: string;
 
-  LineChartGroupName: string;
-  BarChartGroupName: string;
+	  LineChartGroupName: string;
+	  BarChartGroupName: string;
 
-  accordionListNameLabel: string;
-  accordionGroupByColumnLabel: string;
+	  accordionListNameLabel: string;
+	  accordionGroupByColumnLabel: string;
 
-  lineChartVisibleLabel: string;
-  lineChartListNameLabel: string;
-  lineChartXAxisColumnLabel: string;
-  lineChartYAxisColumnLabel: string;
+	  lineChartVisibleLabel: string;
+	  lineChartListNameLabel: string;
+	  lineChartXAxisColumnLabel: string;
+	  lineChartYAxisColumnLabel: string;
 
-  stackedBarChartVisibleLabel: string;
-  stackedBarChartListNameLabel: string;
-  stackedBarChartXAxisColumnLabel: string;
-  stackedBarChartYAxisColumnLabel: string;
-  stackedBarChartDataColumnLabel: string;
-}
-declare module 'HelloWorldWebPartStrings' {
-  const strings: IHelloWorldWebPartStrings;
-  export = strings;
-}
-```
->**Note:** This defines properties that applied to controls labels in property pane
+	  stackedBarChartVisibleLabel: string;
+	  stackedBarChartListNameLabel: string;
+	  stackedBarChartXAxisColumnLabel: string;
+	  stackedBarChartYAxisColumnLabel: string;
+	  stackedBarChartDataColumnLabel: string;
+	}
+	declare module 'HelloWorldWebPartStrings' {
+	  const strings: IHelloWorldWebPartStrings;
+	  export = strings;
+	}
+	```
 
-2. Edit the file *__src/webparts/helloworld/loc/en-us.js__* to change the content as following, each name/value pair maps a property defined in the interface **IHelloWorldWebPartStrings**:
+	>**Note:** This defines properties that applied to controls labels in property pane
+
+2. Edit the file *__src/webparts/helloworld/loc/en-us.js__* to change the content as following. Each name/value pair maps a property defined in the interface **IHelloWorldWebPartStrings**:
+
 	```JS
 	define([], function() {
 		return {
@@ -522,6 +550,7 @@ declare module 'HelloWorldWebPartStrings' {
 	```
 
 2. Edit the file *__src/webparts/helloworld/HelloWorldWebPart.ts__* to change interface **IHelloWorldWebPartProps** as following:
+
 	```TypeScript
 	export interface IHelloWorldWebPartProps {
 		accordionListName: string;
@@ -539,7 +568,9 @@ declare module 'HelloWorldWebPartStrings' {
 		stackedBarChartDataColumn?: string;
 	}
 	```
+
 3. Edit the file *__src/webparts/helloworld/HelloWorldWebPart.manifest.json__* to replace section **properties** in  section **preconfiguredEntries** with following:
+
 	```JSON
 	"properties": {
 		"accordionListName":"Tasks",
@@ -557,9 +588,11 @@ declare module 'HelloWorldWebPartStrings' {
 		"stackedBarChartDataColumn": "ItemData3"
 	}
 	```
+
 	>**Note:** These entries assign default values for properties used in property pane.
 
 3. Continue to edit the file *__src/webparts/helloworld/HelloWorldWebPart.ts__* to replace contents of function **getPropertyPaneConfiguration** with following code:
+
 	```typescript
 		protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
 		return {
@@ -634,9 +667,11 @@ declare module 'HelloWorldWebPartStrings' {
 		};
 	}
 	``` 
+
 	> **Note:** This defines three groups in the property pane
 
 4. Add the missing function to the end.
+
 	```TypeScript
 	private validatePropertyies(visible: boolean, value: string): string {
 		if (!visible || visible && value && value.length) {
@@ -647,6 +682,7 @@ declare module 'HelloWorldWebPartStrings' {
 	```
 
 5. Override **get** method of **disableReactivePropertyChanges** to enable non-reactive mode of the property pane, in this mode, an **Apply** button will show in the bottom of the property pane, and when click, will trigger **onAfterPropertyPaneChangesApplied** event.
+
 	```TypeScript
 	protected get disableReactivePropertyChanges(): boolean {
 		return true;
@@ -655,6 +691,7 @@ declare module 'HelloWorldWebPartStrings' {
 
 ### Retrieve SharePoint list data and bind to component
 1. Add field **_thisData** to the start of class **HelloWorldWebPart** with some initial values, which holds data used for grouped list and charts. 
+
 	```TypeScript
 	private _thisData: IHelloWorldProps = {
 		lineOption: {
@@ -678,7 +715,9 @@ declare module 'HelloWorldWebPartStrings' {
 		error: []
 	};
 	```
+
 2. Replace function **render** with following code to pass data as props to **HelloWorld** component
+
 	```TypeScript
 	public render(): void {
 		const element: React.ReactElement<IHelloWorldProps> = React.createElement(
@@ -691,7 +730,9 @@ declare module 'HelloWorldWebPartStrings' {
 		ReactDom.render(element, this.domElement);
 	}
 	```
+
 3. Add field **paramConfigUrl** to holds the url of the customizations JSON file.
+
 	```TypeScript
 	private readonly paramConfigUrl = 'https://o365parameterizedsamples.blob.core.windows.net/resources/customizations.json';
 	```
@@ -711,27 +752,35 @@ declare module 'HelloWorldWebPartStrings' {
 		}
 	}
 	```
+
 4. Add below import statement to import **HttpClient** and **HttpClientConfiguration** modules.
+
 	```TypeScript
 	import { HttpClient, HttpClientConfiguration } from '@microsoft/sp-http';
 	```
+
 	Add **_getParameters** to retrieve the customizations JSON file
-		```TypeScript
-		private _getParameters(): Promise<any> {
-			return this.context.httpClient.get(this.paramConfigUrl, HttpClient.configurations.v1).then((response) => {
-				return response.json();
-			});
-		}
-		```
+
+	```TypeScript
+	private _getParameters(): Promise<any> {
+		return this.context.httpClient.get(this.paramConfigUrl, HttpClient.configurations.v1).then((response) => {
+			return response.json();
+		});
+	}
+	```
+
 5. Import **pnp** and **moment** modules, one is used to connect to SharePoint list, the other for formating date.
+
 	```TypeScript
 	import * as moment from 'moment';
 	import pnp from 'sp-pnp-js';
 	```
+
 	Add **_getData** method to get SharePoint list data depending on inputs from configuring property pane.
+
 	```TypeScript
-	  private _getData() {
-    this.context.statusRenderer.displayLoadingIndicator(this.domElement, 'data');
+	private _getData() {
+		    this.context.statusRenderer.displayLoadingIndicator(this.domElement, 'data');
     this._thisData.error.length = 0;
     this._thisData.lineChartVisible = this.properties.lineChartVisible;
     this._thisData.stackedBarChartVisible = this.properties.stackedBarChartVisible;
@@ -928,51 +977,73 @@ declare module 'HelloWorldWebPartStrings' {
       this.context.statusRenderer.clearLoadingIndicator(this.domElement);
       this.render();
     });
-	}
+    }
 	```
+
 	>**Note:** This method create a batch request to wrap requests to three SharePoint lists, and handle data properly so that it can be used to assign components' props. And when all requests completed, call **this.render()** to update components 
 
 6. Add method **onAfterPropertyPaneChangesApplied** as following, it will be called when user click **Apply** button on property pane.
+
 	```typescript
 	protected onAfterPropertyPaneChangesApplied() {
-    this._getData();
+      this._getData();
 	}
 	```
+
 8. Import **IParamConfiguration** module
+
 	```TypeScript
 	import { IHelloWorldProps, IParamConfiguration} from './components/IHelloWorldProps';
 	```
+
 8. Add method **onInit** as following, it first calls **_getParameters** to get configurations, then calls **_getData** to get SharePoint list data.
+
 	```TypeScript
-	  protected onInit(): Promise<void> {
-    this._getParameters().then(response => {
-      this._thisData.paramConfiguration = response['SharePoint'] as IParamConfiguration;
-    }).then(() => {
-      this._getData();
-    });
-    return super.onInit();
-		}
+	protected onInit(): Promise<void> {
+      this._getParameters().then(response => {
+        this._thisData.paramConfiguration = response['SharePoint'] as IParamConfiguration;
+      }).then(() => {
+        this._getData();
+      });
+      return super.onInit();
+	}
 	```
+
 9. Save the file and other previously edited files.
 
 ### Preview the web part in SharePoint
 1. Press Cmd/Ctrl+` to open an Integrated Terminal.  
+
 	![](Images/open_shell.png)
+
 2. Run below command to install the developer certificate for use with SPFx development.
+
 	 ```Shell
 	 gulp trust-dev-cert
 	 ```
+
 3. Run below command to build and preview your web part.
+
 	````Shell
 	gulp serve
 	````
+
 	This command will execute a series of gulp tasks to create a local, Node-based HTTPS server on 'localhost:4321' and launch your default browser to preview web parts from your local dev environment at https://localhost:4321/temp/workbench.html.
+
 	>**Note:** SharePoint Workbench is also hosted in SharePoint to preview and test your local web parts in development. The key advantage is that now you are running in SharePoint context and that you will be able to interact with SharePoint data.
+
 4. In the browser, go to the following URL: **https://your-sharepoint-site/_layouts/workbench.aspx**.
+
 	>**Note:** If you followed the instructions in the [Getting Started with the SharePoint Framework (SPFx)](https://github.com/OfficeDev/TrainingContent/blob/master/SharePoint/SharePointFramework/01%20Getting%20Started%20with%20the%20SharePoint%20Framework/Lab.md) module, the workbench page is located at **https://&lt;TENANCY&gt;.sharepoint.com/sites/dev/_layouts/workbench.aspx**.  Replace the **&lt;TENANCY&gt;** placeholder with the name of your Office 365 Developer tenancy.
+
 4. Click add button to add **HelloWorld** webpart to the page
+
 	![](Images/add_helloworld_webpart.png)
+
 5. Click the left pencil icon to open property pane, make changes and click apply to view compoents updates.
+
 	![](Images/complete_accordion.png)
+
 	![](Images/complete_charts.png)
+
 	![](Images/property_accordion_linechart.png) ![](Images/property_stackedbarchart.png)
