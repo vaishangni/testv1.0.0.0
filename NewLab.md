@@ -149,10 +149,11 @@ Create two lists in your Office 365 developer tenant's developer site.
 
 In Visual Studio Code, open the file *__config\config.json__*, add below modules to the externals section:
 
-````JSON
+```JSON
 	"chartist": "https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js",
 	"moment": "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
-````
+```
+
 >**Note:** Use the externals section contains the libraries that are not bundled with the default bundle. For module related CSS files, use **SPComponentLoader.loadCss** to load, will mentioned laster in this lab. 
 
 Full content of the config.json file as currently as follows:
@@ -180,6 +181,7 @@ Full content of the config.json file as currently as follows:
   }
 }
 ```
+
 ### Create ChartistGraph component
 1. Add a new file to the *__src/webparts/helloworld/components__* folder named **IChartistGraphProps.ts**, then add following code to it.
 	```TypeScript
@@ -202,34 +204,34 @@ Full content of the config.json file as currently as follows:
 	import { IChartistGraphProps } from './IChartistGraphProps';
 
 	export default class ChartistGraph extends React.Component<IChartistGraphProps, {}> {
-		private _container: HTMLDivElement;
-		private _chartist;
-		public render() {
-			return (
-				<div className={this.props.className || ''}>
-					<header>
-						<h4>{this.props.chartHeader}</h4>
-					</header>
-					<div
-						className='ct-chart'
-						ref={el => this._container = el} />
-				</div>);
-		}
-		public componentDidMount() {
-			this.drawChart(this.props);
-		}
-		public componentDidUpdate() {
-			this.drawChart(this.props);
-		}
-		private drawChart(config) {
-			const { data, type, option, responsiveOptions } = config;
-			if (this._chartist) {
-					this._chartist.update(data, option, responsiveOptions);
-			}
-			else {
-					this._chartist = new Chartist[type](this._container, data, option, responsiveOptions);
-			}
-		}
+      private _container: HTMLDivElement;
+      private _chartist;
+      public render() {
+      	return (
+          <div className={this.props.className || ''}>
+            <header>
+              <h4>{this.props.chartHeader}</h4>
+            </header>
+            <div
+              className='ct-chart'
+            	ref={el => this._container = el} />
+          </div>);
+      }
+      public componentDidMount() {
+      	this.drawChart(this.props);
+      }
+      public componentDidUpdate() {
+      	this.drawChart(this.props);
+      }
+      private drawChart(config) {
+      	const { data, type, option, responsiveOptions } = config;
+      	if (this._chartist) {
+          this._chartist.update(data, option, responsiveOptions);
+      	}
+      	else {
+          this._chartist = new Chartist[type](this._container, data, option, responsiveOptions);
+      	}
+      }
 	}
 	```
 	>**Note:** the function **drawChart** takes data and options from component's props, then initialize or update when props changed.
