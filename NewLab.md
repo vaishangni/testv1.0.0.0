@@ -22,7 +22,7 @@ Create two lists in your Office 365 developer tenant's developer site.
    2. Choose **Tasks**.
 
    3. In the popup window, enter **Tasks** in the name textbox and click **Create** button to create the list.
-   
+
 	![](Images/create_list_Tasks.png)
 	 
 3. Create list **Items**.
@@ -87,7 +87,7 @@ Create two lists in your Office 365 developer tenant's developer site.
 
    6. Choose an option for **ItemData2**. 
 
-   7. Choose an option for **ItemData2**.
+   7. Choose an option for **ItemData3**.
 
    8. Choose **Save**.
 
@@ -148,10 +148,11 @@ Create two lists in your Office 365 developer tenant's developer site.
 ### Unbundle external dependencies from web part bundle
 
 In Visual Studio Code, open the file *__config\config.json__*, add below modules to the externals section:
-```JSON
-    "chartist": "https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js",
-    "moment": "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
-```
+
+````JSON
+	"chartist": "https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js",
+	"moment": "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"
+````
 >**Note:** Use the externals section contains the libraries that are not bundled with the default bundle. For module related CSS files, use **SPComponentLoader.loadCss** to load, will mentioned laster in this lab. 
 
 Full content of the config.json file as currently as follows:
