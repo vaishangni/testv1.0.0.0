@@ -607,93 +607,93 @@ Full content of the config.json file as currently as follows:
 
 3. Continue to edit the file *__src/webparts/helloworld/HelloWorldWebPart.ts__* to replace the content of function **getPropertyPaneConfiguration** with following code:
 
-```typescript
-protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-  return {
-    pages: [
-      {
-        header: {
-          description: strings.PropertyPaneDescription
-        },
-        groups: [
-          {
-            groupName: strings.BasicGroupName,
-            groupFields: [
-              PropertyPaneTextField('accordionListName', {
-                label: strings.accordionListNameLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, true)
-              }),
-              PropertyPaneTextField('accordionGroupByColumn', {
-                label: strings.accordionGroupByColumnLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, true)
-              })]
-          },
-          {
-            groupName: strings.LineChartGroupName,
-            groupFields: [
-              PropertyPaneToggle('lineChartVisible', {
-                label: strings.lineChartVisibleLabel,
-                onText: "Show",
-                offText: "Hide"
-              }),
-              PropertyPaneTextField('lineChartListName', {
-                label: strings.lineChartListNameLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.lineChartVisible)
-              }),
-              PropertyPaneTextField('lineChartXAxisColumn', {
-                label: strings.lineChartXAxisColumnLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.lineChartVisible)
-              }),
-              PropertyPaneTextField('lineChartYAxisColumn', {
-                label: strings.lineChartYAxisColumnLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.lineChartVisible)
-              })]
-          },
-          {
-            groupName: strings.BarChartGroupName,
-            groupFields: [
-              PropertyPaneToggle('stackedBarChartVisible', {
-                label: strings.stackedBarChartVisibleLabel,
-                onText: "Show",
-                offText: "Hide"
-              }),
-              PropertyPaneTextField('stackedBarChartListName', {
-                label: strings.stackedBarChartListNameLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
-              }),
-              PropertyPaneTextField('stackedBarChartXAxisColumn', {
-                label: strings.stackedBarChartXAxisColumnLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
-              }),
-              PropertyPaneTextField('stackedBarChartYAxisColumn', {
-                label: strings.stackedBarChartYAxisColumnLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
-              }),
-              PropertyPaneTextField('stackedBarChartDataColumn', {
-                label: strings.stackedBarChartDataColumnLabel,
-                onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
-              })
-            ]
-          }
-        ]
-      }
-    ]
-  };
-}
-``` 
+   ```typescript
+   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+     return {
+       pages: [
+       {
+         header: {
+         description: strings.PropertyPaneDescription
+         },
+         groups: [
+         {
+           groupName: strings.BasicGroupName,
+           groupFields: [
+           PropertyPaneTextField('accordionListName', {
+             label: strings.accordionListNameLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, true)
+           }),
+           PropertyPaneTextField('accordionGroupByColumn', {
+             label: strings.accordionGroupByColumnLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, true)
+           })]
+         },
+         {
+           groupName: strings.LineChartGroupName,
+           groupFields: [
+           PropertyPaneToggle('lineChartVisible', {
+             label: strings.lineChartVisibleLabel,
+             onText: "Show",
+             offText: "Hide"
+           }),
+           PropertyPaneTextField('lineChartListName', {
+             label: strings.lineChartListNameLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.lineChartVisible)
+           }),
+           PropertyPaneTextField('lineChartXAxisColumn', {
+             label: strings.lineChartXAxisColumnLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.lineChartVisible)
+           }),
+           PropertyPaneTextField('lineChartYAxisColumn', {
+             label: strings.lineChartYAxisColumnLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.lineChartVisible)
+           })]
+         },
+         {
+           groupName: strings.BarChartGroupName,
+           groupFields: [
+           PropertyPaneToggle('stackedBarChartVisible', {
+             label: strings.stackedBarChartVisibleLabel,
+             onText: "Show",
+             offText: "Hide"
+           }),
+           PropertyPaneTextField('stackedBarChartListName', {
+             label: strings.stackedBarChartListNameLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
+           }),
+           PropertyPaneTextField('stackedBarChartXAxisColumn', {
+             label: strings.stackedBarChartXAxisColumnLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
+           }),
+           PropertyPaneTextField('stackedBarChartYAxisColumn', {
+             label: strings.stackedBarChartYAxisColumnLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
+           }),
+           PropertyPaneTextField('stackedBarChartDataColumn', {
+             label: strings.stackedBarChartDataColumnLabel,
+             onGetErrorMessage: this.validatePropertyies.bind(this, this.properties.stackedBarChartVisible)
+           })
+           ]
+         }
+         ]
+       }
+       ]
+     };
+   }
+   ``` 
 
-  Import **PropertyPaneToggle** module
+   > **Note:** This defines three groups in the property pane
 
-  ```TypeScript
-  import {
-    BaseClientSideWebPart,
-    IPropertyPaneConfiguration,
-    PropertyPaneTextField,
-    PropertyPaneToggle
-  } from '@microsoft/sp-webpart-base';
-  ```
+   Import **PropertyPaneToggle** module
 
-  > **Note:** This defines three groups in the property pane
+   ```TypeScript
+   import {
+     BaseClientSideWebPart,
+     IPropertyPaneConfiguration,
+     PropertyPaneTextField,
+     PropertyPaneToggle
+   } from '@microsoft/sp-webpart-base';
+   ```
 
 4. Add the missing function to the end.
 
